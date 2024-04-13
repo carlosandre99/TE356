@@ -74,10 +74,53 @@ distances = [20 : 330];
 
 lambda = 3e8 / 868e6;
 PL = 10 * log10((4 * pi * distances./lambda).^2);
-Pr=Pt + Gt +Gr - PL;
+Pr = Pt + Gt + Gr - PL;
 
-plot(distances, Pr, 'r-'); 
-title("Modo 1 de operação do rádio LoRa; Free Space Propagation Curve");
+plot(distances, Pr, 'r-');
+title("Valores medidos de potência recebida (RSSI) para o Modo 1");
 xlabel("distância (m)");
 ylabel("potência recebida (RSSI)");
 axis([0 350 -95 -65]);
+
+%Mode 1  LOSoutdoor (30-300m)
+A_mode1 = -38.3;
+n_mode1 = 2.1;
+
+A_mode5 = -35.6;
+n_mode5 = 2.1;
+
+A_mode10 = -26.4;
+n_mode10 = 2.4;
+
+distances_mode1 = 10.^((A_mode1 - Pr) / (10 * n_mode1));
+distances_mode5 = 10.^((A_mode5 - Pr) / (10 * n_mode5));
+distances_mode10 = 10.^((A_mode10 - Pr) / (10 * n_mode10));
+
+RSSI_mode1 = -(10*n_mode1*log10(distances_mode1)-A_mode1);
+RSSI_mode5 = -(10*n_mode5*log10(distances_mode5)-A_mode5);
+RSSI_mode10 = -(10*n_mode10*log10(distances_mode10)-A_mode10);
+
+figure;
+plot(distances_mode1, RSSI_mode1, 'b-', 'DisplayName', 'RSSI Mode1'); hold on;
+plot(distances_mode5, RSSI_mode5, 'k-', 'DisplayName', 'RSSI Mode5'); 
+plot(distances_mode10, RSSI_mode10, 'c-', 'DisplayName', 'RSSI Mode10');  
+plot(dist20, medidas20m, 'g*', 'DisplayName', 'Medidas 20m');
+plot(dist40, medidas40m, 'm*', 'DisplayName', 'Medidas 40m');
+plot(dist60, medidas60m, 'y*', 'DisplayName', 'Medidas 60m');
+plot(dist80, medidas80m, 'c*', 'DisplayName', 'Medidas 80m');
+plot(dist100, medidas100m, 'k*', 'DisplayName', 'Medidas 100m');
+plot(dist120, medidas120m, 'w*', 'DisplayName', 'Medidas 120m');
+plot(dist140, medidas140m, 'b*', 'DisplayName', 'Medidas 140m');
+plot(dist160, medidas160m, 'r*', 'DisplayName', 'Medidas 160m');
+plot(dist180, medidas180m, 'g*', 'DisplayName', 'Medidas 180m');
+plot(dist200, medidas200m, 'm*', 'DisplayName', 'Medidas 200m');
+plot(dist250, medidas250m, 'y*', 'DisplayName', 'Medidas 250m');
+plot(dist330, medidas330m, 'c*', 'DisplayName', 'Medidas 330m');
+
+plot(distances, Pr, 'r--', 'DisplayName', 'Modelo Espaço Livre');
+
+title("Potência Recebida (RSSI) e Distância - LoRa Mode");
+xlabel("Distância (m)");
+ylabel("Potência Recebida (RSSI) [dBm]");
+legend('Location', 'best');
+
