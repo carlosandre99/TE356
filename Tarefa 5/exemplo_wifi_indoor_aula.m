@@ -9,7 +9,7 @@ clear; clc; close all;
 area_width=500;    
 area_height=500;  
 
-step_grid=5;           % Passo de simulação em pixels (Controle de Complexidade/Velocidade)
+step_grid=20;           % Passo de simulação em pixels (Controle de Complexidade/Velocidade)
 
 a=1:step_grid:area_width;      area_width=a(end);
 a=1:step_grid:area_height;     area_height=a(end);
@@ -20,23 +20,28 @@ a=1:step_grid:area_height;     area_height=a(end);
 % Definições das Paredes em Metros - Escala de 10 pixels/metro
 % ------------------------------------------------------------------------------------------------------
 % Paredes Verticais
-% Formato das Coordenadas = (x_inicial    y_inicial    x_final   y_final)    
-wall_v= [ 2    2    48    2;
-               2   48   48    48;
-               15   18   48    18;
-               20   28   48    28;
-               ] ;
+% Formato das Coordenadas = (x_inicial    y_inicial    x_final   y_final) 
+
+
+wall_v= [ 3    12    3    36;
+          9    12    9    36;
+          18    12    18   24;
+          27   12    27   18;
+          27   30    27   36;
+          36   12    36   36;
+          45   12    45   36;
+
+          ] ;
 
 % Paredes Horizontais
-wall_h= [ 2    2    2    48;
-                48    2   48    48;
-                15   18   15    2;
-                25   18   25    2;
-                35   18   35    2;
-                20   28   20    48;
-                35   28   35    48;
-               ] ;
-           
+wall_h= [ 3    12    45    12;
+          27   18    36    18;
+          27   30    36    30;
+          18    24    24     24;
+          3    36    45    36;
+          ] ;
+
+
 % Passa para a Escala de Pixels - 10 pixels/metro
 wall_v=(wall_v*10);
 wall_h=(wall_h*10);
@@ -101,16 +106,16 @@ pause
 
 % Desnormalização
 % Passa para a Escala de Pixels - 10 pixels/metro
-x_ap=10;   y_ap=45;
+x_ap=23;   y_ap=28;
 x_ap=x_ap*10;   y_ap=y_ap*10;
 
 % ------------------------------------------------------------------------------------
 % Dados do AP
 % ------------------------------------------------------------------------------------
-f=2.412e9; 
-Pt_dBm=15; % Potência de Transmissão em dBm
-Gt=0; % Ganho da Antena Transmissora (dBi)
-Gr=0; % Ganho da Antena Receptora (dBi)
+f=2.4835e9; 
+Pt_dBm=20; % Potência de Transmissão em dBm
+Gt=4; % Ganho da Antena Transmissora (dBi)
+Gr=2; % Ganho da Antena Receptora (dBi)
 n=2.5;  % Expoente de Perda de Percurso do Log-Distance
 d0=1;   % Distancia de referencia
 sigma2=5;  % Variancia do Sombreamento
@@ -183,20 +188,18 @@ for i=1:step_grid:length(y)
         
         
 
-        if (Pr_dBm(i,j)>=-68)
-            Taxa(i,j)=54;
-        elseif (Pr_dBm(i,j)>=-75)&(Pr_dBm(i,j)<-68)
-            Taxa(i,j)=36;
-        elseif (Pr_dBm(i,j)>=-79)&(Pr_dBm(i,j)<-75)
-            Taxa(i,j)=24;
-        elseif (Pr_dBm(i,j)>=-82)&(Pr_dBm(i,j)<-79)
-            Taxa(i,j)=18;
-        elseif (Pr_dBm(i,j)>=-87)&(Pr_dBm(i,j)<-82)
-            Taxa(i,j)=9;
-        elseif (Pr_dBm(i,j)>=-88)&(Pr_dBm(i,j)<-87)
-            Taxa(i,j)=6;
-        elseif (Pr_dBm(i,j)>=-89)&(Pr_dBm(i,j)<-88)
-            Taxa(i,j)=1;
+        if Pr_dBm(i,j) >= -71
+            Taxa(i,j) = 300;
+        elseif Pr_dBm(i,j) >= -75 && Pr_dBm(i,j) < -71
+            Taxa(i,j) = 150;
+        elseif Pr_dBm(i,j) >= -78 && Pr_dBm(i,j) < -75
+            Taxa(i,j) = 54;
+        elseif Pr_dBm(i,j) >= -93 && Pr_dBm(i,j) < -78
+            Taxa(i,j) = 11;
+        elseif Pr_dBm(i,j) >= -92 && Pr_dBm(i,j) < -78
+            Taxa(i,j) = 6;
+        elseif Pr_dBm(i,j) >= -96 && Pr_dBm(i,j) < -92
+            Taxa(i,j) = 1;
         end
         
         
