@@ -9,7 +9,7 @@ clear; clc; close all;
 area_width=500;    
 area_height=500;  
 
-step_grid=20;           % Passo de simulação em pixels (Controle de Complexidade/Velocidade)
+step_grid=1;           % Passo de simulação em pixels (Controle de Complexidade/Velocidade)
 
 a=1:step_grid:area_width;      area_width=a(end);
 a=1:step_grid:area_height;     area_height=a(end);
